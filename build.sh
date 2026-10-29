@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 VERSION="${1:-$(git describe --tags --always 2>/dev/null || echo dev)}"
 mkdir -p dist
 # Icono y metadatos del .exe de Windows (se enlazan solos como *.syso).
-if go run github.com/tc-hib/go-winres@v0.3.3 make --in winres/winres.json --out rsrc >/dev/null 2>&1; then
+if go run ./tools/winres "${VERSION#v}"; then
   echo "  recursos de Windows generados"
 else
   echo "  aviso: no se pudieron generar los recursos de Windows (sin icono en el .exe)"
