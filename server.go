@@ -38,6 +38,8 @@ type Server struct {
 	trustLoopback bool
 	version       string
 	startedAt     time.Time
+	// Quit is called when the local UI asks the app to exit.
+	Quit func()
 
 	mu       sync.Mutex
 	failures map[string]*failureState // brute force protection per IP
@@ -82,6 +84,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /api/send", s.auth(s.handleSend))
 	mux.HandleFunc("GET /api/events", s.auth(s.handleEvents))
 	mux.HandleFunc("GET /api/qr", s.auth(s.handleQR))
+	mux.HandleFunc("POST /api/quit", s.handleQuit)
 	mux.Handle("/", s.staticHandler())
 	return s.hostCheck(mux)
 }
@@ -410,6 +413,17 @@ func (s *Server) handleQR(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/png")
 	w.Header().Set("Cache-Control", "no-store")
 	w.Write(png)
+}
+
+// handleQuit stops the application. Only the browser on this machine may
+// call it, so a phone or another computer can never shut WiFiDrop down.
+func (s *Server) handleQuit(w http.ResponseWriter, r *http.Request) {
+	if !(s.trustLoopback && isLoopback(r.RemoteAddr)) || s.Quit == nil {
+		writeJSON(w, http.StatusForbidden, map[string]any{"error": "solo desde este equipo"})
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+	go s.Quit()
 }
 
 // --- events (server-sent) --------------------------------------------------

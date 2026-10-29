@@ -30,10 +30,37 @@ archivos viajan directamente por la red local a la velocidad del Wi‑Fi.
 
 ## Instalación
 
+### Descargas
+
+En la página de **Releases** del repositorio hay siempre una entrada
+«Última versión (main)» con los archivos compilados automáticamente:
+
+| Dispositivo | Archivo |
+|-------------|---------|
+| Android | `wifidrop-android.apk` |
+| Windows | `wifidrop-windows-amd64.exe` |
+| macOS Apple Silicon | `wifidrop-darwin-arm64` |
+| macOS Intel | `wifidrop-darwin-amd64` |
+| Linux | `wifidrop-linux-amd64` |
+
 ### Escritorio
 
-Descarga el binario de tu sistema desde la página de *Releases* y ejecútalo.
-No necesita instalación. Opciones útiles:
+Descarga el binario de tu sistema y ábrelo. La primera vez se instala solo:
+se copia a una carpeta estable y crea el acceso directo con su icono
+(Escritorio y menú Inicio en Windows, `WiFiDrop.app` en `~/Applications` en
+macOS, lanzador en el menú de aplicaciones en Linux). A partir de ahí se abre
+como cualquier otra app y se cierra con el botón «Salir» de la interfaz.
+
+- **Windows**: SmartScreen puede avisar porque el ejecutable no está firmado;
+  pulsa «Más información → Ejecutar de todas formas».
+- **macOS**: si Gatekeeper lo bloquea, haz clic derecho → «Abrir» la primera
+  vez. En la terminal: `chmod +x wifidrop-darwin-arm64 && ./wifidrop-darwin-arm64`.
+- **Linux**: `chmod +x wifidrop-linux-amd64 && ./wifidrop-linux-amd64`.
+
+`wifidrop install` y `wifidrop uninstall` crean o quitan el acceso directo a
+mano; `-no-install` evita que se cree en el primer arranque.
+
+Opciones útiles:
 
 ```
 wifidrop -dir ~/Compartido     # carpeta de recepción
