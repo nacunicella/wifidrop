@@ -19,6 +19,9 @@ type Config struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	PIN  string `json:"pin"`
+	// Installed records that the launcher/shortcuts were created once, so
+	// later runs do not repeat it.
+	Installed bool `json:"installed"`
 }
 
 func configPath() (string, error) {

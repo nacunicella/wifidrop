@@ -6,7 +6,7 @@
 
   const $ = (id) => document.getElementById(id);
   const els = {
-    deviceName: $('deviceName'), installBtn: $('installBtn'),
+    deviceName: $('deviceName'), installBtn: $('installBtn'), quitBtn: $('quitBtn'),
     pinCard: $('pinCard'), pinForm: $('pinForm'), pinInput: $('pinInput'), pinError: $('pinError'), pinDeviceName: $('pinDeviceName'),
     app: $('app'), target: $('target'), drop: $('drop'), fileInput: $('fileInput'), transfers: $('transfers'),
     pairCard: $('pairCard'), togglePair: $('togglePair'), pairBody: $('pairBody'), qr: $('qr'), urlSelect: $('urlSelect'), pinValue: $('pinValue'),
@@ -111,6 +111,7 @@
     els.app.hidden = false;
     els.dirLabel.textContent = info.dir || '';
     els.pairCard.hidden = !info.local;
+    els.quitBtn.hidden = !info.local;
     if (info.local) renderPairing(info);
     refreshPeers(); refreshFiles();
     setInterval(refreshPeers, 3000);
@@ -367,6 +368,17 @@
     es.addEventListener('deleted', refreshFiles);
     es.onerror = () => { es.close(); setTimeout(connectEvents, 5000); };
   }
+
+  // ---- quit (host machine only) -----------------------------------------
+  els.quitBtn.addEventListener('click', async () => {
+    if (!confirm('¿Cerrar WiFiDrop? El móvil y los demás equipos dejarán de ver este ordenador.')) return;
+    try {
+      await api('/api/quit', { method: 'POST' });
+      document.body.innerHTML = '<main><section class="card"><h2>WiFiDrop se ha cerrado</h2><p class="muted">Puedes cerrar esta pestaña. Para volver a usarlo, abre WiFiDrop desde el acceso directo.</p></section></main>';
+    } catch (e) {
+      toast('No se pudo cerrar: ' + e.message);
+    }
+  });
 
   // ---- install prompt ----------------------------------------------------
   let deferredPrompt = null;

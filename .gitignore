@@ -2,6 +2,7 @@
 /wifidrop
 /wifidrop.exe
 *.part
+*.syso
 .DS_Store
 
 # Android
