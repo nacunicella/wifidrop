@@ -1,0 +1,15 @@
+/dist/
+/wifidrop
+/wifidrop.exe
+*.part
+.DS_Store
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/app/*.iml
+/test/fixtures/big.bin
