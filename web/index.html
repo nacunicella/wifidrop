@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WiFiDrop</title>
+<meta name="description" content="Transferencia rápida de archivos por Wi-Fi entre el móvil y el ordenador.">
+<meta name="theme-color" content="#0f766e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WiFiDrop">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img src="/icon.svg" alt="" width="28" height="28">
+    <span>WiFiDrop</span>
+  </div>
+  <div class="device" id="deviceName" title="Equipo que guarda los archivos">…</div>
+  <button class="icon-btn" id="installBtn" hidden title="Instalar app">⤓ Instalar</button>
+</header>
+
+<main>
+  <section class="card" id="pinCard" hidden>
+    <h2>Conectar con este equipo</h2>
+    <p>Introduce el PIN de 6 dígitos que muestra <strong id="pinDeviceName">el ordenador</strong>, o vuelve a escanear el código QR.</p>
+    <form id="pinForm" class="pin-form" autocomplete="off">
+      <input id="pinInput" size="6" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" required>
+      <button type="submit" class="primary">Conectar</button>
+    </form>
+    <p class="error" id="pinError" hidden></p>
+  </section>
+
+  <div id="app" hidden>
+    <section class="card send">
+      <div class="send-head">
+        <h2>Enviar archivos</h2>
+        <label class="target">
+          <span>a</span>
+          <select id="target"></select>
+        </label>
+      </div>
+      <div class="drop" id="drop">
+        <input type="file" id="fileInput" multiple hidden>
+        <div class="drop-inner">
+          <div class="drop-icon">⇪</div>
+          <p><strong>Toca para elegir archivos</strong><span class="desktop-only"> o arrástralos aquí</span></p>
+          <p class="muted">Varios a la vez, de cualquier tamaño</p>
+        </div>
+      </div>
+      <ul class="transfers" id="transfers"></ul>
+    </section>
+
+    <section class="card" id="pairCard">
+      <div class="row-between">
+        <h2>Conectar el móvil</h2>
+        <button class="link" id="togglePair">Mostrar</button>
+      </div>
+      <div id="pairBody" hidden>
+        <p class="muted">Escanea este código con la cámara del móvil (mismo Wi‑Fi) y añade la página a la pantalla de inicio para instalarla.</p>
+        <div class="pair">
+          <img id="qr" alt="Código QR" width="220" height="220">
+          <div class="pair-info">
+            <div class="label">Dirección</div>
+            <select id="urlSelect"></select>
+            <div class="label">PIN</div>
+            <div class="pin" id="pinValue">—</div>
+            <p class="muted small">El QR ya incluye el PIN. Si lo escribes a mano, úsalo una sola vez por dispositivo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row-between">
+        <h2>Equipos en la red</h2>
+        <button class="link" id="manualPeer">Añadir por IP</button>
+      </div>
+      <ul class="peers" id="peers"><li class="muted">Buscando…</li></ul>
+    </section>
+
+    <section class="card">
+      <div class="row-between">
+        <h2>Archivos recibidos</h2>
+        <span class="muted small" id="dirLabel"></span>
+      </div>
+      <ul class="files" id="files"><li class="muted">Aún no hay archivos.</li></ul>
+    </section>
+  </div>
+</main>
+
+<div class="toasts" id="toasts"></div>
+
+<dialog id="peerPinDialog">
+  <form method="dialog">
+    <h3>PIN de <span id="peerPinName"></span></h3>
+    <p class="muted">Pide el PIN que aparece en la pantalla del otro equipo.</p>
+    <input id="peerPinInput" size="6" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" autocomplete="off">
+    <menu>
+      <button value="cancel">Cancelar</button>
+      <button value="ok" class="primary">Enviar</button>
+    </menu>
+  </form>
+</dialog>
+
+<dialog id="manualDialog">
+  <form method="dialog">
+    <h3>Añadir equipo por dirección</h3>
+    <p class="muted">Escribe la IP del otro equipo tal como aparece en su pantalla, por ejemplo 192.168.1.20.</p>
+    <input id="manualAddr" size="16" placeholder="192.168.1.20" autocomplete="off">
+    <menu>
+      <button value="cancel">Cancelar</button>
+      <button value="ok" class="primary">Añadir</button>
+    </menu>
+  </form>
+</dialog>
+
+<script src="/app.js"></script>
+</body>
+</html>
