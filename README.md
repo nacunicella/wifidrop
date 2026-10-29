@@ -102,6 +102,7 @@ go build .                 # binario para este sistema
 ./build.sh                 # todos los sistemas, en ./dist
 go test ./...              # pruebas
 go run ./tools/genicons    # regenerar los iconos PNG a partir del diseño
+go run ./tools/winres      # recursos del .exe de Windows (icono, versión); build.sh ya lo hace
 ```
 
 La app Android se compila con Gradle 8.9, JDK 17 y el SDK de Android:
